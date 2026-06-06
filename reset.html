@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head><meta charset="UTF-8"><title>重置工具</title></head>
+<body style="padding:40px;font-family:sans-serif;">
+<h2>网站数据重置工具</h2>
+<p>点击下面的按钮清除所有编辑数据，恢复默认布局：</p>
+<button onclick="reset()" style="padding:12px 24px;font-size:16px;background:#7c3aed;color:#fff;border:none;border-radius:8px;cursor:pointer;">🔄 重置所有数据</button>
+<p id="msg" style="margin-top:20px;color:#666;"></p>
+<script>
+function reset() {
+  // 备份图片数据
+  const data = JSON.parse(localStorage.getItem('xcl_cms_v2') || '{}');
+  const images = {};
+  Object.keys(data).forEach(k => {
+    if (data[k].bgImage || data[k].imageUrl) {
+      images[k] = { bgImage: data[k].bgImage, imageUrl: data[k].imageUrl };
+    }
+  });
+  // 清除所有CMS数据
+  localStorage.removeItem('xcl_cms_v2');
+  // 保存备份的图片
+  localStorage.setItem('xcl_images_backup', JSON.stringify(images));
+  document.getElementById('msg').innerHTML = '<b>✅ 已重置！</b><br>请关闭此页面，重新打开主网站。您的图片已备份。';
+}
+</script>
+</body>
+</html>
